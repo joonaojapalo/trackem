@@ -8,13 +8,16 @@ from routes import app
 
 # read port
 port = int(os.environ["PORT"])
-logger.debug("Platform PORT=%i" % port)
+logger.debug("port=%i" % port)
 
 # start wsgi server
-http_server = HTTPServer(WSGIContainer(app))
-http_server.listen(port)
+app.run(debug=True, port=port)
 
-try:
-    IOLoop.instance().start()
-except KeyboardInterrupt:
-    IOLoop.instance().stop()
+if False:
+	http_server = HTTPServer(WSGIContainer(app))
+	http_server.listen(port)
+
+	try:
+	    IOLoop.instance().start()
+	except KeyboardInterrupt:
+	    IOLoop.instance().stop()

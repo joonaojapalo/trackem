@@ -8,7 +8,6 @@ class Config(object):
 
 class Development(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'localhost'
 
 class Production(Config):
     DEBUG = False
