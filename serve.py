@@ -8,12 +8,14 @@ from routes import app
 
 # read port
 port = int(os.environ["PORT"])
-logger.debug("port=%i" % port)
 
 # start wsgi server
-app.run(debug=True, port=port)
+if app.config["DEBUG"]:
+	logger.debug("starting in debug mode. port=%i" % port)
+	app.run(debug=True, port=port)
+else:
+	logger.debug("starting in production mode. port=%i" % port)
 
-if False:
 	http_server = HTTPServer(WSGIContainer(app))
 	http_server.listen(port)
 
