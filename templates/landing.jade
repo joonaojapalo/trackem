@@ -1,0 +1,16 @@
+extends public_layout
+
+block content
+	.container
+		.row
+			.col-sm-6.col-sm-offset-3.col-md-4.col-sm-offset-4
+				form#login-form(action="login", method="post")
+					.tile.tile-login
+						h3.logo trackEm
+						.input-icon
+							span.fa.fa-user
+							input.form-control(type="text", name="username", placeholder="Username")
+						.input-icon
+							span.fa.fa-lock
+							input.form-control(type="password", name="password", placeholder="******")
+						a.btn.btn-block.btn-primary.btn-embossed(href="#",onClick="document.getElementById('login-form').submit();return false;") Log in

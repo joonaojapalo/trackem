@@ -1,0 +1,20 @@
+extend base_layout
+
+block navbar
+	.container-fluid(style="margin-top: 1em;")
+		.navbar.navbar-default(role="navigation")
+			.container-fluid
+				.navbar-header
+					button.navbar-toggle.collapsed(type="button",data-toggle="collapse",data-target="#navbar-collapse2")
+						span.fa-fa.bars
+					span.navbar-brand.palette(style="font-weight: 800; font-size: 24px;") trackEm
+				.collapse.navbar-collapse#navbar-collapse2
+					ul.nav.navbar-nav
+						li.active
+							a(href="home") Pricing
+					ul.nav.navbar-nav.navbar-right.navbar-icons
+						li
+							a(href="/")
+								i.fa.fa-login
+								span Login
+

@@ -1,0 +1,60 @@
+doctype html
+html
+	head
+		meta(name="viewport", content="width=device-width, initial-scale=1, shrink-to-fit=no")
+		meta(http-equiv="x-ua-compatible", content="ie=edge")
+		meta(charset="utf-8")
+
+		link(rel="stylesheet", href="/static/bootstrap/css/bootstrap.css")
+		link(rel="stylesheet", href="/static/css/font-awesome.min.css")
+		link(rel="stylesheet", href="/static/css/drunken-parrot.css")
+		link(rel="stylesheet", href="/static/css/demo.css")
+
+		script(src="/static/lib/require.min.js" data-main="/static/app")
+
+	body.palette-coastal-surf
+		script(type="text/javascript", src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js")
+		script(type="text/javascript", src="/static/bootstrap/js/bootstrap.min.js")
+		script(type="text/javascript", src="/static/js/checkbox.js")
+		script(type="text/javascript", src="/static/js/radio.js")
+		script(type="text/javascript", src="/static/js/bootstrap-switch.js")
+		script(type="text/javascript", src="/static/js/toolbar.js")
+		script(type="text/javascript", src="/static/js/application.js")
+
+		.container-fluid(style="margin-top: 1em;")
+			.navbar.navbar-default(role="navigation")
+				.container-fluid
+					.navbar-header
+						button.navbar-toggle.collapsed(type="button",data-toggle="collapse",data-target="#navbar-collapse2")
+							span.fa-fa.bars
+						span.navbar-brand.palette(style="font-weight: 800; font-size: 24px;") trackEm
+					.collapse.navbar-collapse#navbar-collapse2
+						ul.nav.navbar-nav
+							li.active
+								a(href="#") Dashboard
+							li
+								a(href="#maps") Maps
+							li
+								a(href="#trainings") Trainings
+						ul.nav.navbar-nav.navbar-right.navbar-icons
+							li
+								a(href="#groups")
+									span.fa.fa-users
+									span {{group.name}}
+							li.dropdown
+								a.dropdown-toggle(href="#",data-toggle="dropdown") {{user.name}}
+									i.fa.fa-chevrondow
+								ul.dropdown-menu
+									.arrow.top
+									li
+										a(href="#user") Settings
+									li
+										a(href="/logout")
+											i.fa.fa-logout
+											|Logout
+
+			block content
+
+			hr
+			.text-center
+				p Sporzz, 2016.
