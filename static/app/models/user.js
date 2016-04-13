@@ -3,10 +3,12 @@
   define(["backbone"], function(Backbone) {
     var User;
     return User = Backbone.Model.extend({
-      url: "/api/users/~",
-      say: function(msg) {
-        return console.log(this.get("name"));
-      }
+      defaults: {
+        name: "",
+        email: "",
+        groups: []
+      },
+      url: "/api/users/~"
     });
   });
 

@@ -2,6 +2,9 @@ import os
 import json
 import unittest
 
+# set test config
+os.environ["APP_CONFIG"] = "config.Testing"
+
 from flask.ext.login import login_user, logout_user
 
 import login_manager
@@ -13,10 +16,6 @@ from models import User
 
 class TrackEmTestCase(unittest.TestCase):
     def setUp(self):
-        app.config['TESTING'] = True
-        app.config['WTF_CSRF_ENABLED'] = False
-        basedir = ""
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(self.get_basedir(), 'test.db')
         self.app = app.test_client()
 
         with app.app_context():
@@ -33,15 +32,21 @@ class TrackEmTestCase(unittest.TestCase):
         """
         return self.app.post(url, data=json.dumps(data), headers=[('Content-Type', 'application/json')])
 
-    def log_in_user(self, username):
+    def api_put(self, url, data):
+        """ api put request helper
+        """
+        return self.app.put(url, data=json.dumps(data), headers=[('Content-Type', 'application/json')])
+
+    def log_in_user(self, username, password):
         """ login use by username in
         """
+        rv = self.app.post("/login", data={"username": username, "password": password})
+        self.assertEqual(rv.status_code, 302)
+        self.assertTrue(rv.location.endswith("?success"))
 
-        with app.test_request_context():
-            user = User.query.filter_by(name=username).one()
-            login_user(user)
-
-        return user
+    def log_out_user(self):
+        rv = self.app.get("/logout")
+        self.assertTrue(rv.location.endswith("?logout"))
 
     def get_basedir(self):
         return ""

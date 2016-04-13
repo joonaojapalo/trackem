@@ -28,11 +28,17 @@ app.jinja_env.add_extension('pyjade.ext.jinja.PyJadeExtension')
 from users_api import users_api
 from groups_api import groups_api
 from maps_api import maps_api
+from races_api import races_api
+from runners_api import runners_api
+from follower_api import follower_api
 
 # register blueprints
 app.register_blueprint(users_api)
 app.register_blueprint(groups_api)
 app.register_blueprint(maps_api)
+app.register_blueprint(races_api)
+app.register_blueprint(runners_api)
+app.register_blueprint(follower_api)
 
 
 # rendered routes
@@ -62,15 +68,15 @@ def login():
 	if user.password_match(password):
 		# grant access
 		login_user(user)
-		return redirect(url_for('trackem_app'))
+		return redirect("%s?success" % url_for('trackem_app'))
 
 	else:
-		return redirect(url_for('index'))
+		return redirect("%s?fail" % url_for('index'))
 
 
 @login_required
 @app.route("/logout", methods=["GET", "POST"])
 def logout():
     logout_user()
-    return redirect(url_for('index'))
+    return redirect("%s?logout" % url_for('index'))
 

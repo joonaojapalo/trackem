@@ -1,4 +1,4 @@
-define ["handlebars", "app/models/user", "app/views/app-layout"], (Handlebars, User, AppLayoutView) ->
+define ["handlebars", "radio", "app/state", "app/views/app-layout", "app/locales/locale"], (Handlebars, Radio, state, AppLayoutView, locale) ->
 	$ = require "jquery"
 	Backbone = require "backbone"
 	Marionette = require "marionette"
@@ -7,42 +7,61 @@ define ["handlebars", "app/models/user", "app/views/app-layout"], (Handlebars, U
 	Marionette.Renderer.render = (template, data) ->
 		Handlebars.compile(template) data
 
+	# setup handlebars l10n
+	Handlebars.registerHelper "_", (keyword, options) ->
+		return new Handlebars.SafeString(locale[state.get "locale"][keyword] ? keyword)
+
+	# define navigation channel
+	navChannel = Radio.channel "navigation"
+	userChannel = Radio.channel "user"
+
+	# app layout (attached to <body>)
+	appLayout = new AppLayoutView
+
 	# app router
 	AppRouter = Backbone.Router.extend
 		routes:
 			"": "dashboard"
 			"maps": "maps"
-			"trainings": "trainings"
-			"groups": "trainings"
+			"races": "races"
+			"groups": "groups"
 			"user": "user"
+
+		requireAndShow: (layoutName) ->
+			require ["app/views/#{layoutName}/layout"], (LayoutView) ->
+				console.log "got #{layoutName} layout. rendering.."
+				layout = new LayoutView
+
+				layout.on "show", ->
+					navChannel.trigger layoutName
+
+				appLayout.contentRegion.show layout
+
+
 		dashboard: ->
-#			Radio.channel("navigation")
-			console.log "dashboard"			
+			@requireAndShow "dashboard"
+
 		user: ->
-			console.log "user account route"
+			@requireAndShow "user"
+
 		maps: ->
-			a=1
-		trainings: ->
-			a=1
+			@requireAndShow "maps"
+
+		races: ->
+			@requireAndShow "races"
+
 		groups: ->
-			a=1
+			@requireAndShow "groups"
 
 
 	appRouter = new AppRouter()
 
-	# say when started
-	appRouter.on "route", (route) ->
-		console.log "maps route.", route
+	navChannel.on "maps", console.log.bind console, "navChannel:maps"
 
-	# app wide models
-	user = new User
-
-	($.when user.fetch()).then ->
-		appLayout = new AppLayoutView
+	# start app
+	($.when (state.get "user").fetch()).then ->
 
 		appLayout.on "render", ->
 			Backbone.history.start()
 
 		appLayout.render()
-
-

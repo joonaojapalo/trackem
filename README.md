@@ -47,10 +47,16 @@ Client-side `Backbone.Radio` channels
 
 
 # Bullets to tackle
- - api level unittesting with authentication
+ - apis
+ 	- map
+ 	- race
+ 	- runner
  - front-end
  	- marionette list views
  	- new object editor
+ - andoid app
+ 	- smokes
+ 	- location collerctor service
  - SSL
  	- force ssl
  	- create & get certs
@@ -64,3 +70,5 @@ Client-side `Backbone.Radio` channels
 2016-03-02 15:30: login & jade layout
 2016-03-02 17:42: coffee script smokes.
 2016-03-03 11:13: rest api uunittesting smokes
+2016-03-15 11:14: android app smokes.
+2016-03-31 12:55: 1st android service bound.

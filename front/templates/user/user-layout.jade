@@ -1,0 +1,43 @@
+.container-fluid
+	.row
+		.col-md-4.col-sm-6.col-xs-12
+			.panel.panel-default
+				.panel-body
+					h1.panel-title Me
+					hr
+					form
+						.form-group.input-icon
+							span.fa.fa-user
+							input.form-control(type="input", placeholder="Name")
+						.form-group.input-icon
+							span.fa.fa-envelope
+							input.form-control(type="input", placeholder="Email")
+						.form-group
+							button.btn.btn-default.pull-right
+								i.fa.fa-check
+								| Update
+
+			.panel.panel-default
+				.panel-body
+					h1.panel-title Receipts
+					hr
+					h4 Group A
+					.row
+						.col-xs-6 12.06.2015
+						.col-xs-6.text-right 170 EUR
+					.row
+						.col-xs-12.text-right
+							a(href="#")
+								span.fa.fa-file-pdf-o
+								span Download
+					hr
+					h4 Group B
+					.row
+						.col-xs-6 16.06.2015
+						.col-xs-6.text-right 170 EUR
+					.row
+						.col-xs-12.text-right
+							a(href="#")
+								span.fa.fa-file-pdf-o
+								span Download
+

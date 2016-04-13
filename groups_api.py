@@ -55,9 +55,9 @@ class APIGroups (Resource):
         args = group_parser.parse_args()
         group = Group(args["name"])
         current_user.groups.append(group)
+        db.session.add(group)
         db.session.commit()
         return group
-
 
 
 # init flask-restful api

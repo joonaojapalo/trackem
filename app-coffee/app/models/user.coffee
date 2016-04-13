@@ -1,5 +1,8 @@
 define ["backbone"], (Backbone) ->
 	User = Backbone.Model.extend
+		defaults:
+			name: 	""
+			email:  ""
+			groups: []
+
 		url: "/api/users/~"
-		say: (msg) ->
-			console.log @get "name"

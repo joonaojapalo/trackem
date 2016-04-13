@@ -11,10 +11,7 @@ html
 		link(rel="stylesheet", href="/static/css/drunken-parrot.css")
 		link(rel="stylesheet", href="/static/css/demo.css")
 
-		block head
-
-	body.palette-coastal-surf
-		script(type="text/javascript", src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js")
+		script(type="text/javascript", src="/static/lib/jquery.min.js")
 		script(type="text/javascript", src="/static/bootstrap/js/bootstrap.min.js")
 		script(type="text/javascript", src="/static/js/checkbox.js")
 		script(type="text/javascript", src="/static/js/radio.js")
@@ -22,5 +19,7 @@ html
 		script(type="text/javascript", src="/static/js/toolbar.js")
 		script(type="text/javascript", src="/static/js/application.js")
 
-		block navbar
+		block head
+
+	body.palette-coastal-surf
 		block content

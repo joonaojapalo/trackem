@@ -12,6 +12,7 @@ __all__ = ["login_manager"]
 # create login manager 
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.login_view = "login"
 
 # define user loading
 @login_manager.user_loader

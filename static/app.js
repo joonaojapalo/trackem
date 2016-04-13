@@ -11,7 +11,8 @@
       marionette: "backbone.marionette.min",
       radio: "backbone.radio.min",
       handlebars: "handlebars.amd.min",
-      text: "text.min"
+      text: "text.min",
+      modelbinder: "Backbone.ModelBinder.min"
     }
   });
 

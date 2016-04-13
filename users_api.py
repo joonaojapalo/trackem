@@ -7,7 +7,7 @@ from flask.ext.login import login_required, current_user
 
 from logger import logger
 from db import db
-import models
+from models import User, Group
 import login_manager
 
 
@@ -40,10 +40,10 @@ post_user_parser.add_argument("groupName")
 class APIUser (Resource):
     @marshal_with(user_fields)
     def get(self, user_id):
-        return models.User.query.filter_by(id=user_id).one()
+        return User.query.filter_by(id=user_id).one()
 
     def delete(self, user_id):
-        user = models.User.query.filter_by(id=user_id).one()
+        user = User.query.filter_by(id=user_id).one()
         user.status = "deleted"
         db.session.commit()
         return "true"
@@ -52,7 +52,7 @@ class APIUser (Resource):
 class APIUsers (Resource):
     @marshal_with(user_fields)
     def get(self):
-        return models.User.query.all()
+        return User.query.all()
 
     @marshal_with(user_fields)
     def post(self):
@@ -63,8 +63,8 @@ class APIUsers (Resource):
         group_name = args["groupName"] if args["groupName"] is not None else "%s's Group" % username.capitalize()
 
         # add user group relation
-        user = models.User(username, args["email"], args["password"])
-        group = models.Group(group_name)
+        user = User(username, args["email"], args["password"])
+        group = Group(group_name)
         user.groups = [group]
         db.session.add(user)
         db.session.add(group)
@@ -78,7 +78,7 @@ class APIMyUser (Resource):
     @login_required
     @marshal_with(user_fields)
     def get(self):
-        return models.User.query.filter_by(id=current_user.id).one()
+        return User.query.filter_by(id=current_user.id).one()
 
     @login_required
     @marshal_with(user_fields)

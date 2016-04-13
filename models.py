@@ -1,10 +1,16 @@
 import json
 import time
+import random
+import base64
+import string
 
 from werkzeug.security import check_password_hash, generate_password_hash
 from db import db
 
-__all__ = ["User"]
+
+def randomize_hash(bits=128, prefix=""):
+    hash = base64.b64encode(str(random.randint(0, 2 << bits)))
+    return "%s.%s" % (prefix, hash)
 
 
 user_groups = db.Table('user_group',
@@ -98,7 +104,8 @@ class Group(db.Model):
     name    = db.Column(db.String, nullable=False)
 
     # relations
-    maps = db.relationship('Map')
+    maps    = db.relationship('Map', lazy="dynamic")
+    races   = db.relationship('Race', lazy="dynamic")
 
     def __init__(self, name):
         self.name = name
@@ -109,7 +116,7 @@ class Payment(db.Model):
     id      = db.Column(db.Integer, primary_key=True)
     created = db.Column(db.Float, default=time.time)
     user    = db.Column(db.Integer, db.ForeignKey("receipt.id"), nullable=False)
-    receipt = db.Column(db.Integer, db.ForeignKey("receipt.id"), nullable=True)
+    receipt = db.Column(db.Integer, db.ForeignKey("receipt.id"))
     licence = db.Column(db.Integer, db.ForeignKey("receipt.id"))
 
 #   payment_gateway_attrs
@@ -128,19 +135,19 @@ class Map(db.Model):
     created     = db.Column(db.Float, default=time.time, index=True)
     name        = db.Column(db.String, nullable=False, index=True)
     is_tiles    = db.Column(db.Boolean, default=False)
-    status      = db.Column(db.Enum("new", "ready", "deleted", name="map_status_enum"), nullable=False)
-    loc_1_lat   = db.Column(db.Float, nullable=True)
-    loc_1_lon   = db.Column(db.Float, nullable=True)
-    loc_1_x     = db.Column(db.Float, nullable=True)
-    loc_1_y     = db.Column(db.Float, nullable=True)
-    loc_2_lat   = db.Column(db.Float, nullable=True)
-    loc_2_lon   = db.Column(db.Float, nullable=True)
-    loc_2_x     = db.Column(db.Float, nullable=True)
-    loc_2_y     = db.Column(db.Float, nullable=True)
-    loc_3_lat   = db.Column(db.Float, nullable=True)
-    loc_3_lon   = db.Column(db.Float, nullable=True)
-    loc_3_x     = db.Column(db.Float, nullable=True)
-    loc_3_y     = db.Column(db.Float, nullable=True)
+    status      = db.Column(db.Enum("new", "ready", "deleted", name="map_status_enum"), nullable=False, default="new")
+    loc_1_lat   = db.Column(db.Float)
+    loc_1_lon   = db.Column(db.Float)
+    loc_1_x     = db.Column(db.Float)
+    loc_1_y     = db.Column(db.Float)
+    loc_2_lat   = db.Column(db.Float)
+    loc_2_lon   = db.Column(db.Float)
+    loc_2_x     = db.Column(db.Float)
+    loc_2_y     = db.Column(db.Float)
+    loc_3_lat   = db.Column(db.Float)
+    loc_3_lon   = db.Column(db.Float)
+    loc_3_x     = db.Column(db.Float)
+    loc_3_y     = db.Column(db.Float)
     group       = db.Column(db.Integer, db.ForeignKey("group.id"), nullable=False)
 
     def __init__(self, name):
@@ -159,19 +166,44 @@ class MapTile(db.Model):
 
 class Race(db.Model):
     __tablename__ = 'race'
-    id      = db.Column(db.Integer, primary_key=True)
-    created = db.Column(db.Float, default=time.time, index=True)
-    name    = db.Column(db.String, nullable=False, index=True)
-    code    = db.Column(db.String, index=True)
-    status  = db.Column(db.Enum("stopped", "started", "deleted", name="race_status_enum"), nullable=False, default="stopped")
-    start_time = db.Column(db.Integer)
+    id          = db.Column(db.Integer, primary_key=True)
+    created     = db.Column(db.Float, default=time.time, index=True)
+    name        = db.Column(db.String, nullable=False, index=True)
+    code        = db.Column(db.String, index=True)
+    status      = db.Column(db.Enum("stopped", "started", "deleted", name="race_status_enum"), nullable=False, default="stopped")
+    start_time  = db.Column(db.Integer)
+    race_hash   = db.Column(db.String(255))
+    map         = db.Column(db.ForeignKey("map.id"))
+    group       = db.Column(db.ForeignKey("group.id"), nullable=False)
+
+    traces      = db.relationship("Trace", lazy="dynamic")
+
+    def __init__(self, name, map):
+        self.name = name
+        self.map = map
+        self.code = self.randomize_code()
+        self.race_hash = randomize_hash(128)
+
+    def randomize_code(self, code_length=4):
+        alnum = string.uppercase + string.digits
+        n = len(alnum) - 1
+        unique = False
+
+        while not unique:
+            code = "".join([ alnum[random.randint(0, n)] for i in xrange(code_length)])
+            
+            # TODO: query uniqueness
+            unique = True
+
+        return code
+
 
 
 class Race_control(db.Model):
     __tablename__ = 'race_control'
     id      = db.Column(db.Integer, primary_key=True)
-    lat     = db.Column(db.Float, nullable=True)
-    lon     = db.Column(db.Float, nullable=True)
+    lat     = db.Column(db.Float)
+    lon     = db.Column(db.Float)
     order   = db.Column(db.Integer)
     label   = db.Column(db.String)
     type    = db.Column(db.Enum("start", "control", "finish", name="race_control_enum"), nullable=False, default="control")
@@ -183,6 +215,14 @@ class Trace(db.Model):
     runner_hash = db.Column(db.String, unique=True, index=True)     # for runner access
     status      = db.Column(db.Enum("new", "accept", "reject", name="trace_status_enum"), nullable=False, default="new")
     race        = db.Column(db.Integer, db.ForeignKey("race.id"))
+    runner_name = db.Column(db.String(64))
+
+    locations   = db.relationship("TraceLocation", lazy="dynamic")
+
+    def __init__(self, name, race):
+        self.runner_name    = name
+        self.race           = race
+        self.runner_hash    = randomize_hash()
 
 
 class Runner(db.Model):
@@ -199,3 +239,9 @@ class TraceLocation(db.Model):
     lat     = db.Column(db.Float)
     lon     = db.Column(db.Float)
     time    = db.Column(db.Float)
+
+    def __init__(self, time, lat, lon):
+        self.time = time
+        self.lat = lat
+        self.lon = lon
+

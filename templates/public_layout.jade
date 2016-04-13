@@ -1,6 +1,6 @@
 extend base_layout
 
-block navbar
+block content
 	.container-fluid(style="margin-top: 1em;")
 		.navbar.navbar-default(role="navigation")
 			.container-fluid
@@ -17,4 +17,4 @@ block navbar
 							a(href="/")
 								i.fa.fa-login
 								span Login
-
+	block public_content

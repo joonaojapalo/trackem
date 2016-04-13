@@ -57,15 +57,14 @@ class TestCase(TrackEmTestCase):
         self.assertEqual(len(users), 2)
 
         # test login failure
-        self.app.post("/login", data={"username": "Hank", "password": "invalid_password"})
-        self.assertTrue(rv.status_code, 304)
+        rv = self.app.post("/login", data={"username": "Hank", "password": "invalid_password"})
+        self.assertEqual(rv.status_code, 302)
+        self.assertTrue(rv.location.endswith("?fail"))
 
         # Hank logs in
         rv = self.app.post("/login", data={"username": "Hank", "password": "hank_secret"})
-        self.assertTrue(rv.status_code, 304)
-
-        # login user
-        user_hank = self.log_in_user("Hank")
+        self.assertEqual(rv.status_code, 302)
+        self.assertTrue(rv.location.endswith("?success"))
 
         # get user groups
         groups = self.get_users_groups()
@@ -82,7 +81,6 @@ class TestCase(TrackEmTestCase):
 
         # get group from api
         rv = self.app.get("/api/groups/%i" % groups[0]["id"])
-        print rv
         group0 = json.loads(rv.data)
         self.assertTrue(group0["name"] == groups[0]["name"])
 
