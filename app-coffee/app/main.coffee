@@ -1,4 +1,4 @@
-define ["handlebars", "radio", "app/state", "app/views/app-layout", "app/locales/locale"], (Handlebars, Radio, state, AppLayoutView, locale) ->
+define ["handlebars", "radio", "app/state", "views/app-layout", "app/locales/locale", "widgets/loader"], (Handlebars, Radio, state, AppLayoutView, locale, LoaderView) ->
 	$ = require "jquery"
 	Backbone = require "backbone"
 	Marionette = require "marionette"
@@ -28,13 +28,17 @@ define ["handlebars", "radio", "app/state", "app/views/app-layout", "app/locales
 			"user": "user"
 
 		requireAndShow: (layoutName) ->
+			# start loader animation after a period, if not loaded yet
+			isReady = false
+			setTimeout (-> appLayout.contentRegion.show (new LoaderView) if !isReady), 200
+
 			require ["app/views/#{layoutName}/layout"], (LayoutView) ->
-				console.log "got #{layoutName} layout. rendering.."
 				layout = new LayoutView
 
 				layout.on "show", ->
 					navChannel.trigger layoutName
 
+				isReady = true
 				appLayout.contentRegion.show layout
 
 

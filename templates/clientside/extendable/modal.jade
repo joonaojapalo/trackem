@@ -1,0 +1,12 @@
+#modal.modal(tabindex="-1")
+	.modal-dialog
+		.modal-content
+			.modal-header
+				button.close(data-dismiss="modal",aria-label="Close")
+					span(aria-hidden="true") &times;
+				h4.modal-title {{'{{_ "Add new map"}}'}}
+			.modal-body
+				block body
+			.modal-footer
+				block footer
+

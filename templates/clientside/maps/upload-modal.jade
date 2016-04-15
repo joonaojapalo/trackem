@@ -1,0 +1,12 @@
+extends extendable/modal
+
+block body
+	input.form-control(name="new-map-name",type="text",placeholder="{{'{{_ \'Map name\'}}'}}")
+	br
+	input(type="file")
+	br
+
+block footer
+	button.btn.btn-primary(data-action="create")
+		span.fa.fa-upload
+		| {{'{{_ "Upload"}}'}}

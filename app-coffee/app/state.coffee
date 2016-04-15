@@ -1,4 +1,4 @@
-define ["underscore", "backbone", "app/models/user", "app/models/group"], (_, Backbone, User, Group) ->
+define ["underscore", "backbone", "models/user", "models/group"], (_, Backbone, User, Group) ->
 	State = Backbone.Model.extend
 		defaults:
 			user: 		new User

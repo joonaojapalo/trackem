@@ -1,4 +1,4 @@
-define ["radio", "marionette", "text!templates/app-layout.html", "app/state"], (Radio, Marionette, AppLayoutTemplate, state) ->
+define ["radio", "marionette", "text!templates/app-layout", "app/state"], (Radio, Marionette, AppLayoutTemplate, state) ->
 
 	AppLayout = Marionette.LayoutView.extend
 		el: "body"

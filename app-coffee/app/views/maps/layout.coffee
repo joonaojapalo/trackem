@@ -1,4 +1,4 @@
-define ["jquery", "radio", "underscore", "marionette", "text!templates/maps-layout.html", "app/state", "app/views/maps/dropdown", "app/collections/maps", "app/views/maps/edit"], ($, Radio, _, Marionette, MapsLayoutTemplate, state, Dropdown, Maps, EditMapView) ->
+define ["jquery", "radio", "underscore", "marionette", "text!templates/maps/layout", "app/state", "app/views/maps/dropdown", "app/collections/maps", "app/views/maps/edit"], ($, Radio, _, Marionette, MapsLayoutTemplate, state, Dropdown, Maps, EditMapView) ->
 
 	MapsLayout = Marionette.LayoutView.extend
 
@@ -9,7 +9,8 @@ define ["jquery", "radio", "underscore", "marionette", "text!templates/maps-layo
 			editMapRegion: '[data-region="edit-map"]'
 
 		ui:
-			create: '[data-action="create"]'
+			create: '[data-action="create"]',
+			inputNewMapName: '[name="new-map-name"]'
 
 		events:
 			"click @ui.create": "onCreateClick"
@@ -45,11 +46,14 @@ define ["jquery", "radio", "underscore", "marionette", "text!templates/maps-layo
 				model: map
 
 		onCreateClick: ->
+			newMapName = @ui.inputNewMapName.val()
+			if !newMapName
+				return
+
 			# create map
 			map = new @maps.model
-				name: "My Map"
-				,
-					group: state.get "group"
+				name: newMapName
+				group: (state.get "group").get "id"
 
 			# save
 			_t = @

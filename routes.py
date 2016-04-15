@@ -1,7 +1,7 @@
 import json
 
 from sqlalchemy.orm.exc import NoResultFound
-from flask import request, render_template, redirect, url_for
+from flask import request, render_template, redirect, url_for, Flask
 from flask.ext.login import login_required, login_user, logout_user, current_user
 
 from app import app
@@ -23,6 +23,8 @@ def handle_not_found(error):
 # add extensions
 app.jinja_env.add_extension('pyjade.ext.jinja.PyJadeExtension')
 
+# client app template
+from client_side_templates import client_side_templates
 
 # import api blueprints
 from users_api import users_api
@@ -39,6 +41,7 @@ app.register_blueprint(maps_api)
 app.register_blueprint(races_api)
 app.register_blueprint(runners_api)
 app.register_blueprint(follower_api)
+app.register_blueprint(client_side_templates)
 
 
 # rendered routes
@@ -50,8 +53,8 @@ def index():
 		return render_template("landing.jade")
 
 
-@login_required
 @app.route("/app", methods=["GET"])
+@login_required
 def trackem_app():
 	return render_template("app.jade", username=current_user.name)
 
@@ -74,9 +77,10 @@ def login():
 		return redirect("%s?fail" % url_for('index'))
 
 
-@login_required
 @app.route("/logout", methods=["GET", "POST"])
+@login_required
 def logout():
     logout_user()
     return redirect("%s?logout" % url_for('index'))
+
 

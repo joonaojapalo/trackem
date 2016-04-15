@@ -1,4 +1,4 @@
-define ["radio", "modelbinder", "marionette", "text!templates/maps-edit.html"], (Radio, ModelBinder, Marionette, template) ->
+define ["radio", "modelbinder", "marionette", "text!templates/maps/edit"], (Radio, ModelBinder, Marionette, template) ->
 
 	EditMapView = Marionette.ItemView.extend
 		template: template

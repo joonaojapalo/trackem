@@ -4,6 +4,7 @@
     var Maps;
     return Maps = Backbone.Model.extend({
       urlRoot: function() {
+        console.log("attr", this.attributes);
         return "/api/groups/" + (this.get('group')) + "/maps";
       },
       initialize: function(attributes) {

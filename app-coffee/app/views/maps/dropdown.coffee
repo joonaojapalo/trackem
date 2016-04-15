@@ -1,4 +1,4 @@
-define ["radio", "marionette", "text!templates/maps-dropdown.html"], (Radio, Marionette, template) ->
+define ["radio", "marionette", "text!templates/maps/dropdown"], (Radio, Marionette, template) ->
 
 	ListItemView= Marionette.ItemView.extend
 		tagName: "li"

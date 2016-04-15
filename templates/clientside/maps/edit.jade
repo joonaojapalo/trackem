@@ -1,29 +1,29 @@
-h1.panel-title {{_ "Edit"}}
+h1.panel-title {{'{{_ "Edit"}}'}}
 hr
 form.form
 	fieldset
 		.form-group
-			input.form-control.input-lg(type="text",placeholder="{{_ 'Map name'}}", name="name", value="{{name}}")
+			input.form-control.input-lg(type="text",placeholder="{{'{{_ \'Map name\'}}'}}", name="name", value="{{'{{name}}'}}")
 		.form-group
 			.col-xs-12
-				p {{_ "Place 3 markers of the known location on the map to set up geo referencing."}}
+				p {{'{{'}}_ "Place 3 markers of the known location on the map to set up geo referencing."{{'}}'}}
 		.form-group
 			.col-xs-3
 				label.checkbox(for="cb1")
 					input(type="checkbox",data-toggle="checkbox",disabled="",checked="1")
-					| {{_ "Marker 1"}}
+					| {{'{{_ "Marker 1"}}'}}
 			.col-xs-3
 				label.checkbox(for="cb1")
 					input(type="checkbox",data-toggle="checkbox",disabled="")
-					| {{_ "Marker 2"}}
+					| {{'{{_ "Marker 2"}}'}}
 			.col-xs-3
 				label.checkbox(for="cb1")
 					input(type="checkbox",data-toggle="checkbox",disabled="")
-					| {{_ "Marker 3"}}
+					| {{'{{_ "Marker 3"}}'}}
 			.col-sm-3
 				button.btn.btn-success.btn-lg.btn-block(data-action="save")
 					i.fa.fa-check
-					| {{_ "Save"}}
+					| {{'{{_ "Save"}}'}}
 	fieldset
 		.form-group
 			.col-xs-12

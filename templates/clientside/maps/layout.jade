@@ -1,0 +1,19 @@
+.container-fluid
+	.row
+		.col-md-4.col-sm-6.col-xs-12
+			.panel.panel-default
+				.panel-body
+					h1.panel-title {{'{{_ "Maps"}}'}}
+					hr
+					button.btn.btn-primary.btn-block(data-toggle="modal", data-target="#modal")
+						i.fa.fa-plus
+						| {{'{{_ "Add"}}'}}
+					br
+					div(data-region="maps")
+		.col-md-8.col-sm-6.col-xs-12
+			.panel.panel-default
+				.panel-body
+					div(data-region="edit-map")
+						h4 {{'{{_ "No map selected."}}'}}
+
+include maps/upload-modal
