@@ -1,4 +1,4 @@
-define ["jquery", "radio", "underscore", "marionette", "text!templates/maps/layout", "app/state", "app/views/maps/dropdown", "app/collections/maps", "app/views/maps/edit"], ($, Radio, _, Marionette, MapsLayoutTemplate, state, Dropdown, Maps, EditMapView) ->
+define ["jquery", "radio", "underscore", "marionette", "text!templates/maps/layout", "app/state", "app/views/maps/dropdown", "app/collections/maps", "app/views/maps/edit", "app/views/maps/empty"], ($, Radio, _, Marionette, MapsLayoutTemplate, state, Dropdown, Maps, EditMapView, EmptyMapView) ->
 
 	MapsLayout = Marionette.LayoutView.extend
 
@@ -27,6 +27,11 @@ define ["jquery", "radio", "underscore", "marionette", "text!templates/maps/layo
 			@maps = new Maps [],
 				group: state.get "group"
 
+			# when map is deleted...
+			_this = @
+			mapsChannel.on "delete", ->
+				_this.editMapRegion.show new EmptyMapView
+
 		onBeforeShow: ->
 
 			# fetch data
@@ -34,7 +39,7 @@ define ["jquery", "radio", "underscore", "marionette", "text!templates/maps/layo
 			@maps.fetch().done ->
 				_this.triggerMethod "fetch", _this.maps
 
-			EditMapView
+			@editMapRegion.show new EmptyMapView
 
 		onFetch: (maps) ->
 			@mapsRegion.show new Dropdown

@@ -2,34 +2,46 @@
 	.navbar.navbar-default(role="navigation")
 		.container-fluid
 			.navbar-header
-				button.navbar-toggle.collapsed(type="button",data-toggle="collapse",data-target="#navbar-collapse2")
-					span.fa-fa.bars
-				span.navbar-brand.palette(style="font-weight: 800; font-size: 24px;") trackEm
-			.collapse.navbar-collapse#navbar-collapse2
+				button.navbar-toggle(type="button",data-toggle="collapse",data-target="#navbar-base-collapse")
+					span.fa.fa-bars
+				span.navbar-brand.palette(style="font-weight: 800; font-size: 24px;")
+					a(href="#") trackEm
+			.collapse.navbar-collapse#navbar-base-collapse
 				ul.nav.navbar-nav
 					li.active
-						a(href="#") Dashboard
+						a(href="#") {{'{{_ "Dashboard"}}'}}
 					li
-						a(href="#maps") Maps
+						a(href="#maps") {{'{{_ "Maps"}}'}}
 					li
-						a(href="#races") Trainings
+						a(href="#races") {{'{{_ "Races"}}'}}
 				ul.nav.navbar-nav.navbar-right.navbar-icons
 					li
 						a(href="#groups")
-							span.fa.fa-users
+							span.fa-users.fa.hidden-lg
 							span(data-ui="group")
-					li.dropdown
+					li.dropdown.hidden-xs
 						a.dropdown-toggle(href="#",data-toggle="dropdown")
+							span.fa-user.fa.hidden-lg
 							span(data-ui="username")
 							i.fa.fa-chevrondow
 						ul.dropdown-menu
 							.arrow.top
 							li
-								a(href="#user") Settings
+								a(href="#user")
+									span.fa-cogs.fa.hidden-lg
+									span {{'{{_ "Settings"}}'}}
 							li
 								a(href="/logout")
-									i.fa.fa-logout
-									|Logout
+									span.fa-sign-out.fa.hidden-lg
+									span {{'{{_ "Logout"}}'}}
+					li.visible-xs
+						a(href="#user")
+							span.fa-cogs.fa
+							span {{'{{_ "Settings"}}'}}
+					li.visible-xs
+						a(href="/logout")
+							span.fa-sign-out.fa
+							span {{'{{_ "Logout"}}'}}
 
 	block content
 

@@ -1,14 +1,26 @@
-define ["radio", "marionette", "text!templates/races-layout.html", "app/state"], (Radio, Marionette, RacesLayoutTemplate, state) ->
+define ["radio", "marionette", "text!templates/races/layout", "views/races/races", "views/races/runners", "views/races/player", "app/state"], (Radio, Marionette, template, RacesView, RunnersView, RacePlayerView, state) ->
 
 	RacesLayout = Marionette.LayoutView.extend
 
-		template: RacesLayoutTemplate
+		template: template
 
 		regions:
-			racesRegion: '[data-region="races"]'
+			racesRegion: 		'[data-region="races"]'
+			racePlayerRegion: 	'[data-region="race-player"]'
+			runnersRegion: 		'[data-region="race-runners"]'
+
+		initialize: (options) ->
+			@mergeOptions options, ["races", "runners"]
 
 		onBeforeShow: ->
-			console.log "show child views"
+			@racesRegion.show new RacesView
+				races: @races
+
+			@runnersRegion.show new RunnersView
+				runners: @runners
+
+			@racePlayerRegion.show new RacePlayerView
+				model: @race
 
 		onRender: ->
 			console.log "init jquery widgets"

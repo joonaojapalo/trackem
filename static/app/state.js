@@ -8,9 +8,15 @@
         group: new Group,
         locale: "fi_FI"
       },
+      constants: {
+        url: {
+          followAPI: "https://trackem.com/follow/"
+        }
+      },
       initialize: function() {
         _.bindAll(this, "setDefaultGroup");
-        return (this.get("user")).on("sync", this.setDefaultGroup);
+        (this.get("user")).on("sync", this.setDefaultGroup);
+        return this["const"] = this.constants;
       },
       setDefaultGroup: function(userModel) {
         var groups;

@@ -1,0 +1,23 @@
+.col-sm-4
+	{{'{{#if isPending}}'}}
+	.tile.palette-banana(style="margin-top: 16px;")
+		h4 {{'{{name}}'}}
+		p {{'{{status}}'}}
+		.btn-group.btn-group-justified
+			a.btn.btn-primary.btn-embossed(href="trainings") {{'{{_ "Accept"}}'}}
+			a.btn.btn-danger.btn-embossed(href="trainings") {{'{{_ "Reject"}}'}}
+	{{'{{/if}}'}}
+	{{'{{#if isAccepted}}'}}
+	.tile.palette-emerald(style="margin-top: 16px;")
+		h4 {{name}}
+		p {{status}}
+		.btn-group.btn-group-justified
+			a.btn.btn-warning.btn-embossed(href="trainings") {{'{{_ "Reject"}}'}}
+	{{'{{/if}}'}}
+	{{'{{#if isRejected}}'}}
+	.tile.palette-strawberry(style="margin-top: 16px;")
+		h4 {{'{{name}}'}}
+		p {{'{{status}}'}}
+		.btn-group.btn-group-justified
+			a.btn.btn-warning.btn-embossed(href="trainings") {{'{{_ "Accept"}}'}}
+	{{'{{/if}}'}}

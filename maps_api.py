@@ -43,28 +43,46 @@ map_parser.add_argument("loc_1_lat")
 map_parser.add_argument("loc_1_x")
 map_parser.add_argument("loc_1_y")
 
+
+def read_group(current_user, group_id):
+    # get group by id
+    return Group.query.filter(Group.id == group_id)\
+        .filter(Group.users.any(User.id == current_user.id))\
+        .one()
+
+
 class APIMap (Resource):
+    status_deleted = "deleted"
+
+    def read_map(self, current_user, group_id, map_id):
+        # get group by id
+        group = read_group(current_user, group_id)
+
+        # query map by map_id and current_user.id
+        return Map.query.\
+            filter(Map.id == map_id, Map.group == group.id, Map.status != self.status_deleted).\
+            one()
 
     @login_required
     @marshal_with(map_fields)
     def get(self, group_id, map_id):
-        pass
+        return self.read_map(current_user, group_id, map_id)
+
+    @login_required
+    @marshal_with({"success": fields.Boolean})
+    def delete(self, group_id, map_id):
+        mapobj = self.read_map(current_user, group_id, map_id)
+        mapobj.status = self.status_deleted
+        db.session.commit()
+        return True
 
     @login_required
     @marshal_with(map_fields)
     def put(self, group_id, map_id):
         args = map_parser.parse_args()
 
-        # get group by id
-        group = Group.query\
-            .filter(Group.id == group_id)\
-            .filter(Group.users.any(User.id == current_user.id))\
-            .one()
-
-        # query map by map_id and current_user.id
-        mapobj = Map.query.\
-            filter(Map.id == map_id, Map.group == group.id).\
-            one()
+        # read map
+        mapobj = self.read_map(current_user, group_id, map_id)
 
         # set data
         attrs = ("name", "loc_1_lat", "loc_1_lon", "loc_1_x", "loc_1_y",\
@@ -75,24 +93,24 @@ class APIMap (Resource):
             if attr in args:
                 mapobj.__setattr__(attr, args[attr])
 
-        # TODO: if all loc_* attrs filled -> compute projection
+        # TODO: if all loc_* attrs filled -> publish event
         db.session.commit()
 
         return mapobj
 
 
 class APIMaps (Resource):
+    status_deleted = "deleted"
 
     @login_required
     @marshal_with(map_fields)
     def get(self, group_id):
 
-        # get group by id
-        group = Group.query.filter(Group.id == group_id)\
-            .filter(Group.users.any(User.id == current_user.id))\
-            .one()
+        # read authorized group
+        group = read_group(current_user, group_id)
 
-        return group.maps.all()
+        # read undeleted maps
+        return group.maps.filter(Map.status != self.status_deleted).all()
 
     @login_required
     @marshal_with(map_fields)
@@ -100,14 +118,17 @@ class APIMaps (Resource):
         args = map_parser.parse_args()
 
         # get group by id
-        group = Group.query.filter(Group.id == group_id)\
-            .filter(Group.users.any(User.id == current_user.id))\
-            .one()
+        group = read_group(current_user, group_id)
 
         logger.debug("User '%s' (%i) adding map: '%s' to group '%s'" % (current_user.name, current_user.id, args["name"], group.name))
 
+        # create new map
         mapobj = Map(args["name"])
+
+        # make group relation
         group.maps.append(mapobj)
+
+        # commit transaction
         db.session.add(mapobj)
         db.session.commit()
         return mapobj

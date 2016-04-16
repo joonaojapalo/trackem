@@ -5,9 +5,16 @@ define ["underscore", "backbone", "models/user", "models/group"], (_, Backbone, 
 			group: 		new Group
 			locale: 	"fi_FI"
 
+		constants:
+			url:
+				followAPI: "https://trackem.com/follow/"
+
 		initialize: ->
 			_.bindAll @, "setDefaultGroup"
 			(@get "user").on "sync", @setDefaultGroup
+
+			# constants
+			@const = @constants
 
 		setDefaultGroup: (userModel) ->
 
