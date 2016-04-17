@@ -1,10 +1,13 @@
 h1.panel-title {{'{{_ "Runners"}}'}}
 hr
-ul.nav.nav-tabs.nav-justified
+ul.nav.nav-pills.nav-justified
 	li.active
 		a(href="#") Pending
 	li
 		a(href="#") Accepted
+			span.badge 4
 	li
 		a(href="#") Rejected
-.row(data-region="runner-cards")
+br
+.row
+	.col-xs-12(data-region="runner-cards")
