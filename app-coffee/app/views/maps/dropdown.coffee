@@ -1,8 +1,12 @@
 define ["radio", "marionette", "text!templates/maps/dropdown"], (Radio, Marionette, template) ->
 
-	ListItemView= Marionette.ItemView.extend
+
+	EmptyListView = Marionette.ItemView.extend
+		template: '{{_ "No maps yet. Begin adding one."}}'
+
+	ListItemView = Marionette.ItemView.extend
 #		tagName: "li"
-		template: '<button class="btn btn-default btn-block" data-action="select">{{name}} ({{id}})</button>'
+		template: '<button class="btn btn-default btn-block" data-action="select">{{name}} ({{id}})</button><br>'
 
 		events:
 			"click [data-action='select']": "onClickSelect"
@@ -18,6 +22,7 @@ define ["radio", "marionette", "text!templates/maps/dropdown"], (Radio, Marionet
 	ListView = Marionette.CollectionView.extend
 #		tagName: "ul"
 		childView: ListItemView
+		emptyView: EmptyListView
 #		onRender: ->
 #			@$el.addClass("list-group")
 

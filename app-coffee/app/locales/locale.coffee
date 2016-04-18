@@ -5,6 +5,7 @@ define [],
 		"Upload": "Lataa"
 		"Maps": "Kartat"
 		"No map selected.": "Ei karttaa valittu."
+		"No maps yet. Begin adding one.": "Ei karttoja. Aloita lisäämällä yksi."
 		"Race": "Tapahtuma"
 		"Races": "Tapahtumat"
 		"Runners": "Juoksijat"

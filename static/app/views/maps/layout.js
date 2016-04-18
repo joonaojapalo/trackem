@@ -20,7 +20,7 @@
         var _this, ref;
         _.bindAll(this, "onSelect");
         this.state = new Backbone.Model({
-          mapId: (ref = options.mapId) != null ? ref : null
+          mapId: parseInt((ref = options.mapId) != null ? ref : null)
         });
         this.maps = new Maps([], {
           group: state.get("group")
@@ -47,18 +47,16 @@
         this.mapsRegion.show(new Dropdown({
           collection: maps
         }));
-        map = this.maps.findWhere({
+        map = maps.findWhere({
           id: this.state.get("mapId")
         });
         if (!map) {
           return this.editMapRegion.show(new EmptyMapView);
         } else {
-          console.log("onfetch", map);
           return this.onSelect(map);
         }
       },
       onSelect: function(map) {
-        console.log("map selected: " + (map.get("id")));
         Backbone.history.navigate("maps/" + (map.get('id')));
         return this.editMapRegion.show(new EditMapView({
           model: map
@@ -76,7 +74,6 @@
         });
         _t = this;
         return map.save().done(function() {
-          console.log("new map save success");
           _t.maps.add(map);
           return (Radio.channel("maps")).trigger("map:create", map);
         });

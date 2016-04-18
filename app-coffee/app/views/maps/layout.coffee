@@ -21,7 +21,7 @@ define ["jquery", "radio", "underscore", "marionette", "text!templates/maps/layo
 			_.bindAll @, "onSelect"
 
 			@state = new Backbone.Model
-				mapId: options.mapId ? null
+				mapId: parseInt options.mapId ? null
 
 			# init maps collection
 			@maps = new Maps [],
@@ -44,21 +44,20 @@ define ["jquery", "radio", "underscore", "marionette", "text!templates/maps/layo
 			@maps.fetch().done ->
 				_this.triggerMethod "fetch", _this.maps
 
-
 		onFetch: (maps) ->
 			@mapsRegion.show new Dropdown
 				collection: maps
 
 			# show map
-			map = @maps.findWhere {id: @state.get "mapId"}
+			map = maps.findWhere
+				id: @state.get "mapId"
+
 			if not map
 				@editMapRegion.show new EmptyMapView
 			else
-				console.log "onfetch", map
 				@onSelect map
 
 		onSelect: (map) ->
-			console.log "map selected: #{map.get "id"}"
 			Backbone.history.navigate "maps/#{map.get 'id'}"
 			@editMapRegion.show new EditMapView
 				model: map
@@ -76,6 +75,5 @@ define ["jquery", "radio", "underscore", "marionette", "text!templates/maps/layo
 			# save
 			_t = @
 			map.save().done ->
-				console.log "new map save success"
 				_t.maps.add map
 				(Radio.channel "maps").trigger "map:create", map
