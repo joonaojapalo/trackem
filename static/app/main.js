@@ -15,15 +15,17 @@
     navChannel = Radio.channel("navigation");
     userChannel = Radio.channel("user");
     appLayout = new AppLayoutView;
+    Radio.tuneIn("map");
     AppRouter = Backbone.Router.extend({
       routes: {
         "": "dashboard",
         "maps": "maps",
+        "maps/:id": "map",
         "races": "races",
         "groups": "groups",
         "user": "user"
       },
-      requireAndShow: function(layoutName) {
+      requireAndShow: function(layoutName, options) {
         var isReady;
         isReady = false;
         setTimeout((function() {
@@ -33,7 +35,9 @@
         }), 200);
         return require(["app/views/" + layoutName + "/layout"], function(LayoutView) {
           var layout;
-          layout = new LayoutView;
+          layout = new LayoutView(options != null ? options : {
+            options: {}
+          });
           layout.on("show", function() {
             return navChannel.trigger(layoutName);
           });
@@ -49,6 +53,11 @@
       },
       maps: function() {
         return this.requireAndShow("maps");
+      },
+      map: function(id) {
+        return this.requireAndShow("maps", {
+          mapId: id
+        });
       },
       races: function() {
         return this.requireAndShow("races");

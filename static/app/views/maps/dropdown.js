@@ -3,13 +3,11 @@
   define(["radio", "marionette", "text!templates/maps/dropdown"], function(Radio, Marionette, template) {
     var Dropdown, ListItemView, ListView;
     ListItemView = Marionette.ItemView.extend({
-      tagName: "li",
-      template: '<button class="btn btn-secondary btn-block" tabindex="-1">{{name}} ({{id}})</button>',
+      template: '<button class="btn btn-default" data-action="select">{{name}} ({{id}})</button>',
       events: {
-        "click button": "onClickSelect"
+        "click [data-action='select']": "onClickSelect"
       },
       onRender: function() {
-        this.$el.addClass("list-group-item");
         return this.model.once("change:name", this.render);
       },
       onClickSelect: function() {
@@ -19,11 +17,7 @@
       }
     });
     ListView = Marionette.CollectionView.extend({
-      tagName: "ul",
-      childView: ListItemView,
-      onRender: function() {
-        return this.$el.addClass("list-group");
-      }
+      childView: ListItemView
     });
     return Dropdown = Marionette.LayoutView.extend({
       template: template,

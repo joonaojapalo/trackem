@@ -3,7 +3,7 @@
   define(["radio", "marionette", "text!templates/races/runners", "views/races/runner-card", "app/state"], function(Radio, Marionette, template, RunnerCardView, state) {
     var NoCardsView, RunnerCardsView, RunnersView;
     NoCardsView = Marionette.ItemView.extend({
-      template: '<div class="panel"><div class="panel-body palette-coral"><strong>No runners.</strong> Share the RACE CODE and ask a runner to join.</div></div>'
+      template: '<div class="panel"><div class="panel-body palette-coastal-surf"><strong>{{_ "No runners."}}</strong> {{_ "Share the RACE CODE and ask a runner to join."}}</div></div>'
     });
     RunnerCardsView = Marionette.CollectionView.extend({
       childView: RunnerCardView,

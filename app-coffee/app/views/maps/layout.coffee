@@ -1,12 +1,14 @@
-define ["jquery", "radio", "underscore", "marionette", "text!templates/maps/layout", "app/state", "app/views/maps/dropdown", "app/collections/maps", "app/views/maps/edit", "app/views/maps/empty"], ($, Radio, _, Marionette, MapsLayoutTemplate, state, Dropdown, Maps, EditMapView, EmptyMapView) ->
+define ["jquery", "radio", "underscore", "marionette", "text!templates/maps/layout", "app/state", "app/views/maps/dropdown", "app/collections/maps", "app/views/maps/edit", "app/views/maps/empty", "widgets/loader"], ($, Radio, _, Marionette, MapsLayoutTemplate, state, Dropdown, Maps, EditMapView, EmptyMapView, LoaderView) ->
+
+	mapsChannel = Radio.channel("maps")
 
 	MapsLayout = Marionette.LayoutView.extend
 
 		template: MapsLayoutTemplate
 
 		regions:
-			mapsRegion: '[data-region="maps"]'
-			editMapRegion: '[data-region="edit-map"]'
+			mapsRegion: 	'[data-region="maps"]'
+			editMapRegion: 	'[data-region="edit-map"]'
 
 		ui:
 			create: '[data-action="create"]',
@@ -17,11 +19,9 @@ define ["jquery", "radio", "underscore", "marionette", "text!templates/maps/layo
 
 		initialize: (options) ->
 			_.bindAll @, "onSelect"
+
 			@state = new Backbone.Model
 				mapId: options.mapId ? null
-
-			 mapsChannel = Radio.channel("maps")
-			 mapsChannel.on "map:select", @onSelect
 
 			# init maps collection
 			@maps = new Maps [],
@@ -32,21 +32,34 @@ define ["jquery", "radio", "underscore", "marionette", "text!templates/maps/layo
 			mapsChannel.on "delete", ->
 				_this.editMapRegion.show new EmptyMapView
 
+		onDestroy: ->
+			mapsChannel.off "delete"
+			mapsChannel.off "map:select"
+
 		onBeforeShow: ->
+			mapsChannel.on "map:select", @onSelect
 
 			# fetch data
 			_this = @
 			@maps.fetch().done ->
 				_this.triggerMethod "fetch", _this.maps
 
-			@editMapRegion.show new EmptyMapView
 
 		onFetch: (maps) ->
 			@mapsRegion.show new Dropdown
 				collection: maps
 
+			# show map
+			map = @maps.findWhere {id: @state.get "mapId"}
+			if not map
+				@editMapRegion.show new EmptyMapView
+			else
+				console.log "onfetch", map
+				@onSelect map
+
 		onSelect: (map) ->
 			console.log "map selected: #{map.get "id"}"
+			Backbone.history.navigate "maps/#{map.get 'id'}"
 			@editMapRegion.show new EditMapView
 				model: map
 

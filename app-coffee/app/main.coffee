@@ -18,22 +18,26 @@ define ["handlebars", "radio", "app/state", "views/app-layout", "app/locales/loc
 	# app layout (attached to <body>)
 	appLayout = new AppLayoutView
 
+	#debug
+	Radio.tuneIn "map"
+
 	# app router
 	AppRouter = Backbone.Router.extend
 		routes:
 			"": "dashboard"
 			"maps": "maps"
+			"maps/:id": "map"
 			"races": "races"
 			"groups": "groups"
 			"user": "user"
 
-		requireAndShow: (layoutName) ->
+		requireAndShow: (layoutName, options) ->
 			# start loader animation after a period, if not loaded yet
 			isReady = false
 			setTimeout (-> appLayout.contentRegion.show (new LoaderView) if !isReady), 200
 
 			require ["app/views/#{layoutName}/layout"], (LayoutView) ->
-				layout = new LayoutView
+				layout = new LayoutView (options ? options : {}) 
 
 				layout.on "show", ->
 					navChannel.trigger layoutName
@@ -50,6 +54,10 @@ define ["handlebars", "radio", "app/state", "views/app-layout", "app/locales/loc
 
 		maps: ->
 			@requireAndShow "maps"
+
+		map: (id) ->
+			@requireAndShow "maps",
+				mapId: id
 
 		races: ->
 			@requireAndShow "races"

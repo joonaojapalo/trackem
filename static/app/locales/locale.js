@@ -6,9 +6,23 @@
       "Save": "Tallenna",
       "Upload": "Lataa",
       "Maps": "Kartat",
+      "No map selected.": "Ei karttaa valittu.",
       "Race": "Tapahtuma",
       "Races": "Tapahtumat",
-      "Course": "Rata"
+      "Runners": "Juoksijat",
+      "Tracking": "Seuranta",
+      "Start": "Aloita",
+      "Status": "Tila",
+      "Tracking link": "Seurantalinkki",
+      "Pending": "Odottaa",
+      "Accepted": "Hyväksytty",
+      "Rejected": "Hylätty",
+      "Course": "Rata",
+      "Dashboard": "Koti",
+      "Settings": "Asetukset",
+      "Logout": "Kirjaudu ulos",
+      "No runners.": "Ei yhtään juoksijaa.",
+      "Share the RACE CODE and ask a runner to join.": "Kerro KOODI juoksioille ja pyydä liittymään tapahtumaan."
     }
   });
 

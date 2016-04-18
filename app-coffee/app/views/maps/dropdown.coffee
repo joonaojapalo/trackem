@@ -1,14 +1,14 @@
 define ["radio", "marionette", "text!templates/maps/dropdown"], (Radio, Marionette, template) ->
 
 	ListItemView= Marionette.ItemView.extend
-		tagName: "li"
-		template: '<button class="btn btn-secondary btn-block" tabindex="-1">{{name}} ({{id}})</button>'
+#		tagName: "li"
+		template: '<button class="btn btn-default btn-block" data-action="select">{{name}} ({{id}})</button>'
 
 		events:
-			"click button": "onClickSelect"
+			"click [data-action='select']": "onClickSelect"
 
 		onRender: ->
-			@$el.addClass("list-group-item")
+#			@$el.addClass("list-group-item")
 			@model.once "change:name", @render
 
 		onClickSelect: ->
@@ -16,10 +16,10 @@ define ["radio", "marionette", "text!templates/maps/dropdown"], (Radio, Marionet
 			channel.trigger "map:select", @model
 
 	ListView = Marionette.CollectionView.extend
-		tagName: "ul"
+#		tagName: "ul"
 		childView: ListItemView
-		onRender: ->
-			@$el.addClass("list-group")
+#		onRender: ->
+#			@$el.addClass("list-group")
 
 
 	Dropdown = Marionette.LayoutView.extend
