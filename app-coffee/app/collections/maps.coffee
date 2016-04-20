@@ -8,6 +8,6 @@ define ["underscore", "backbone", "app/models/map"], (_, Backbone, Map) ->
 			groupId = @group.get "id"
 			"/api/groups/#{groupId}/maps"
 
-		initialize: (models, options) ->
+		###initialize: (models, options) ->
 			_.bindAll @, "url"
-			@group = options.group
+			@group = options.group###

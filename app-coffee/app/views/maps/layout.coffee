@@ -1,4 +1,4 @@
-define ["jquery", "radio", "underscore", "marionette", "text!templates/maps/layout", "app/state", "app/views/maps/dropdown", "app/collections/maps", "app/views/maps/edit", "app/views/maps/empty", "widgets/loader"], ($, Radio, _, Marionette, MapsLayoutTemplate, state, Dropdown, Maps, EditMapView, EmptyMapView, LoaderView) ->
+define ["jquery", "radio", "underscore", "marionette", "text!templates/maps/layout", "app/state", "views/maps/dropdown", "views/maps/edit", "views/maps/empty", "widgets/loader", "stores/maps"], ($, Radio, _, Marionette, MapsLayoutTemplate, state, Dropdown, EditMapView, EmptyMapView, LoaderView, mapsStore) ->
 
 	mapsChannel = Radio.channel("maps")
 
@@ -23,10 +23,6 @@ define ["jquery", "radio", "underscore", "marionette", "text!templates/maps/layo
 			@state = new Backbone.Model
 				mapId: parseInt options.mapId ? null
 
-			# init maps collection
-			@maps = new Maps [],
-				group: state.get "group"
-
 			# when map is deleted...
 			_this = @
 			mapsChannel.on "delete", ->
@@ -41,8 +37,8 @@ define ["jquery", "radio", "underscore", "marionette", "text!templates/maps/layo
 
 			# fetch data
 			_this = @
-			@maps.fetch().done ->
-				_this.triggerMethod "fetch", _this.maps
+			mapsStore.fetch().done (maps) ->
+				_this.triggerMethod "fetch", maps
 
 		onFetch: (maps) ->
 			@mapsRegion.show new Dropdown
@@ -68,12 +64,13 @@ define ["jquery", "radio", "underscore", "marionette", "text!templates/maps/layo
 				return
 
 			# create map
-			map = new @maps.model
-				name: newMapName
-				group: (state.get "group").get "id"
+			mapsStore.fetch().done (maps) ->
+				# save
+				mapAttrs =
+					name: newMapName
 
-			# save
-			_t = @
-			map.save().done ->
-				_t.maps.add map
-				(Radio.channel "maps").trigger "map:create", map
+				promise = maps.create mapAttrs,
+					wait: true
+					success: (model) ->
+						mapsChannel.trigger "map:create", model
+

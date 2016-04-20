@@ -8,11 +8,12 @@
         var groupId;
         groupId = this.group.get("id");
         return "/api/groups/" + groupId + "/maps";
-      },
-      initialize: function(models, options) {
-        _.bindAll(this, "url");
-        return this.group = options.group;
       }
+
+      /*initialize: (models, options) ->
+      			_.bindAll @, "url"
+      			@group = options.group
+       */
     });
   });
 

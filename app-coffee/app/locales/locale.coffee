@@ -1,13 +1,18 @@
 define [],
 	"fi_FI":
+		"New": "Uusi"
 		"Edit": "Muokkaa"
 		"Save": "Tallenna"
 		"Upload": "Lataa"
 		"Maps": "Kartat"
+		"Add a new map": "Lisää uusi kartta"
 		"No map selected.": "Ei karttaa valittu."
 		"No maps yet. Begin adding one.": "Ei karttoja. Aloita lisäämällä yksi."
 		"Race": "Tapahtuma"
 		"Races": "Tapahtumat"
+		"Create a new event": "Luo uusi tapahtuma"
+		"Choose map...": "Valitse kartta..."
+		"RACE CODE": "KOODI"
 		"Runners": "Juoksijat"
 		"Tracking": "Seuranta"
 		"Start": "Aloita"

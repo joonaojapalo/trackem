@@ -1,5 +1,8 @@
 extends extendable/modal
 
+block title
+	| {{'{{_ "Add a new map"}}'}}
+
 block body
 	input.form-control(name="new-map-name",type="text",placeholder="{{'{{_ \'Map name\'}}'}}")
 	br
@@ -7,6 +10,7 @@ block body
 	br
 
 block footer
-	button.btn.btn-primary(data-action="create")
+	button.btn.btn-default(data-dismiss="modal") {{'{{_ "Cancel"}}'}}
+	button.btn.btn-primary(data-action="create", data-dismiss="modal")
 		span.fa.fa-upload
 		| {{'{{_ "Upload"}}'}}

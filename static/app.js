@@ -6,6 +6,7 @@
       app: "../app",
       models: "../app/models",
       collections: "../app/collections",
+      stores: "../app/stores",
       views: "../app/views",
       widgets: "../app/views/widgets",
       templates: "/app/templates",
