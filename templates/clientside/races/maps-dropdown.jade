@@ -1,0 +1,7 @@
+.btn-group.btn-group-dropdown
+	button.btn.btn-primary.btn-block.dropdown-toggle(data-toggle="dropdown", type="button", data-ui="title") {{'{{_ "Choose map..."}}'}}
+	ul.dropdown-menu(role="menu")
+		.arrow-top
+		{{'{{#items}}'}}
+		li: a(tabindex="-1", href="#", data-id="{{'{{id}}'}}") {{'{{name}}'}}
+		{{'{{/items}}'}}

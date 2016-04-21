@@ -10,11 +10,8 @@ block body
 	br
 	.row
 		.col-sm-6
-			.btn-group.btn-group-dropdown
-				button.btn.btn-primary.btn-block.dropdown-toggle(data-toggle="dropdown", type="button") {{'{{_ "Choose map..."}}'}}
-				ul.dropdown-menu(role="menu")
-					.arrow-top
-					li: a(tabindex="-1", href="#") Jerikonmäki
+			div(data-region="maps-dropdown")
+
 		.col-sm-6
 			.thumbnail.thumbnail-caption
 				img(src="/static/images/map-example.jpg")
