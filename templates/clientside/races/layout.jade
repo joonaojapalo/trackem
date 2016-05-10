@@ -2,10 +2,21 @@
 	.row
 		.col-md-4.col-sm-4
 			.panel.panel-default
-				.panel-body(data-region="races")
+				.panel-body
+					h1.panel-title {{'{{_ "Races"}}'}}
+					hr
+					div(data-region="races")
+
+					button.btn.btn-primary.btn-block(data-toggle="modal", data-target="#modal")
+						span.fa-plus.fa
+						span {{'{{_ "New"}}'}}
+
+					div(data-region="create-race")
+
 
 			.panel.panel-default
 				.panel-body(data-region="race-player")
+					.alert.palette-coastal-surf: strong {{'{{_ "No race selected."}}'}}
 		.col-md-8.col-sm-8
 			.panel.panel-default
 				.panel-body(data-region="race-runners")

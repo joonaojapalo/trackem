@@ -4,19 +4,15 @@ block title
 	| {{'{{_ "Create a new event"}}'}}
 
 block body
-	.row
-		.col-xs-12
-			input.form-control(name="race-name",placeholder="Race name")
-	br
-	.row
-		.col-sm-6
-			div(data-region="maps-dropdown")
-
-		.col-sm-6
-			.thumbnail.thumbnail-caption
-				img(src="/static/images/map-example.jpg")
-				.caption: h5 Preview map name
-
+	form.form-horizontal
+		.form-group
+			label.col-sm-3.control-label {{'{{_ "Race name"}}'}}
+			.col-sm-9
+				input.form-control(name="race-name",placeholder="Race name")
+		.form-group
+			label.col-sm-3.control-label {{'{{_ "Map"}}'}}
+			.col-sm-9
+				div(data-region="maps-dropdown")
 
 block footer
 	button.btn.btn-default(data-dismiss="modal") {{'{{_ "Cancel"}}'}}

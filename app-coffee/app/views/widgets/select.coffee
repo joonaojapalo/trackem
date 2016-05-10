@@ -1,4 +1,4 @@
-define ["marionette"], (Marionette) ->
+define ["underscore", "marionette", "app/translate"], (_, Marionette, __) ->
 
 	OptionView = Marionette.ItemView.extend
 		tagName: "option"
@@ -23,6 +23,7 @@ define ["marionette"], (Marionette) ->
 			nameAttr: @nameAttr
 
 		initialize: (options) ->
+			_.bindAll @, "findByValue", "onChange"
 			@mergeOptions options, ["nameAttr", "valueAttr"]
 			@prefix = options.prefix || "select"
 
@@ -30,10 +31,17 @@ define ["marionette"], (Marionette) ->
 			@$el.off "change"
 
 		onRender: ->
-			_this = @
-			@$el.on "change", ->
-				value = _this.$el.val()
-				_this.triggerMethod _this.prefix + ":change", _this.findByValue value
+			@$el.on "change", @onChange
+			@$el.prepend '<option val="" selected="1" disabled="1">'+__("Select..")+'</option>'
+
+		onChange: ->
+			# find model
+			value = @$el.val()
+			model = @findByValue parseInt(value)
+
+			# fire event
+			eventName = @prefix + ":change"
+			@trigger eventName, model
 
 		findByValue: (value) ->
 			query = {}

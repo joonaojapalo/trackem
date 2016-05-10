@@ -21,16 +21,7 @@ define ["handlebars", "radio", "app/state", "views/app-layout", "app/locales/loc
 	#debug
 	Radio.tuneIn "map"
 
-	# app router
-	AppRouter = Backbone.Router.extend
-		routes:
-			"": "dashboard"
-			"maps": "maps"
-			"maps/:id": "map"
-			"races": "races"
-			"groups": "groups"
-			"user": "user"
-
+	RequireRouter = Backbone.Router.extend
 		requireAndShow: (layoutName, options) ->
 			# start loader animation after a period, if not loaded yet
 			isReady = false
@@ -46,6 +37,15 @@ define ["handlebars", "radio", "app/state", "views/app-layout", "app/locales/loc
 				appLayout.contentRegion.show layout
 
 
+	# app router
+	AppRouter = RequireRouter.extend
+		routes:
+			"": "dashboard"
+			"maps": "maps"
+			"maps/:id": "map"
+			"groups": "groups"
+			"user": "user"
+
 		dashboard: ->
 			@requireAndShow "dashboard"
 
@@ -59,16 +59,24 @@ define ["handlebars", "radio", "app/state", "views/app-layout", "app/locales/loc
 			@requireAndShow "maps",
 				mapId: id
 
-		races: ->
-			@requireAndShow "races"
-
 		groups: ->
 			@requireAndShow "groups"
 
 
-	appRouter = new AppRouter()
+	RacesRouter = RequireRouter.extend
+		routes:
+			"races/race/:id": "race"
+			"races": "races"
 
-	navChannel.on "maps", console.log.bind console, "navChannel:maps"
+		races: ->
+			@requireAndShow "races"
+
+		race: (id)->
+			(Radio.channel "races").trigger "select", parseInt(id)
+
+
+	appRouter = new AppRouter()
+	racesRouter = new RacesRouter()
 
 	# start app
 	($.when (state.get "user").fetch()).then ->

@@ -29,8 +29,7 @@ race_fields = {
 # input arguments
 race_parser = reqparse.RequestParser()
 race_parser.add_argument("name", required=True)
-race_parser.add_argument("map", required=True)
-race_parser.add_argument("group", type=int, required=True)
+race_parser.add_argument("map", required=True, type=int)
 race_parser.add_argument("status", choices=("stopped", "started"))
 
 

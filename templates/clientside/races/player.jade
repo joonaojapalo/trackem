@@ -1,22 +1,26 @@
 h1.panel-title {{'{{_ "Tracking"}}'}}
 hr
-button.btn.btn-warning.btn-block.btn-lg {{'{{_ "Start"}}'}}
-br
+
+.row
+	.col-lg-4
+		p.text-muted {{'{{_ "Race name"}}'}}:
+	.col-lg-8
+		span {{'{{name}}'}}
+.row
+	.col-lg-4
+		p.text-muted {{'{{_ "RACE CODE"}}'}}:
+	.col-lg-8
+		strong {{'{{code}}'}}
+.row
+	.col-lg-4
+		p.text-muted {{'{{_ "Status"}}'}}:
+	.col-lg-8
+		strong {{'{{status}}'}}
 .row
 	.col-lg-12
-		div(data-ui="maps")
-.row
-	.col-lg-3
-		p.text-muted {{'{{_ "RACE CODE"}}'}}:
-	.col-lg-9
-		strong {{'{{race_hash}}'}}
-.row
-	.col-lg-3
-		p.text-muted {{'{{_ "Status"}}'}}:
-	.col-lg-9
-		strong {{'{{_ "Running"}}'}}
-.row
-	.col-lg-3
 		p.text-muted {{'{{_ "Tracking link"}}'}}:
-	.col-lg-9
-		a(href="#") {{'{{followUrl}}'}}
+	.col-lg-12
+		a(href="{{'{{followUrl}}'}}", target="_blank") {{'{{followUrl}}'}}
+br
+button.btn.btn-warning.btn-block.btn-lg(data-action="start") {{'{{_ "Start"}}'}}
+button.btn.btn-danger.btn-block.btn-lg(data-action="stop") {{'{{_ "Stop"}}'}}

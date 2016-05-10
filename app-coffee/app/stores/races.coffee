@@ -1,8 +1,8 @@
-define ["app/state", "app/store", "app/collections/maps"], (state, Store, Maps) ->
+define ["app/state", "app/store", "app/collections/races"], (state, Store, Races) ->
 
 	MapsStore = Store.extend
 
-		fetchableClass: Maps
+		fetchableClass: Races
 
 		setup: ->
 			@fetchable.group = state.get "group"

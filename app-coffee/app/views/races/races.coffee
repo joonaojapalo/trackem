@@ -1,6 +1,13 @@
-define ["radio", "app/state", "marionette", "text!templates/races/races"], (Radio, state, Marionette, template) ->
+define ["radio", "app/state", "marionette", "text!templates/races/race-item", "stores/races"], (Radio, state, Marionette, template, racesStore) ->
 
-	RacesView = Marionette.ItemView.extend
-
+	RaceItemView = Marionette.ItemView.extend
+		tagName: "li"
+		className: "list-group-item"
 		template: template
+
+
+	RacesView = Marionette.CollectionView.extend
+		childView: RaceItemView
+		tagName: "ul"
+		className: "list-group"
 
