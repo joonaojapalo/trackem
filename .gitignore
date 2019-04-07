@@ -1,3 +1,6 @@
 *.pyc
+*.map.js
 test.db
 static/app/
+static/css/
+
