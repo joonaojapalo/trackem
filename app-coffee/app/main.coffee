@@ -21,6 +21,15 @@ define ["handlebars", "radio", "app/state", "views/app-layout", "app/locales/loc
 	#debug
 	Radio.tuneIn "map"
 
+	# require stores
+	requireStores = (storeModules, success, fail) ->
+		require storeModules, (stores...) ->
+			promise = ($.when.apply(this, store.fetch() for store in stores))
+			promise.done (models...) ->
+				success.apply @, models
+			promise.fail (models...) ->
+				fail.apply(@, models) if fail
+
 	RequireRouter = Backbone.Router.extend
 		requireAndShow: (layoutName, options) ->
 			# start loader animation after a period, if not loaded yet
@@ -65,14 +74,13 @@ define ["handlebars", "radio", "app/state", "views/app-layout", "app/locales/loc
 
 	RacesRouter = RequireRouter.extend
 		routes:
-			"races/race/:id": "race"
 			"races": "races"
+			"races/:id": "races"
 
-		races: ->
-			@requireAndShow "races"
-
-		race: (id)->
-			(Radio.channel "races").trigger "select", parseInt(id)
+		races: (id) ->
+			_this = @
+			requireStores ["stores/races", "stores/runners"], (races, runners) ->
+				_this.requireAndShow "races", {races: races, raceId: parseInt id, runners: runners}
 
 
 	appRouter = new AppRouter()

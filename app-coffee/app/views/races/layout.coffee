@@ -1,4 +1,4 @@
-define ["radio", "underscore", "marionette", "text!templates/races/layout", "views/races/races", "views/races/runners", "views/races/player", "app/state", "views/races/create-race-layout", "stores/races"], (Radio, _, Marionette, template, RacesView, RunnersView, RacePlayerView, state, CreateRaceLayout, racesStore) ->
+define ["radio", "underscore", "marionette", "text!templates/races/layout", "views/races/races", "views/races/runners", "views/races/player", "app/state", "views/races/create-race-layout"], (Radio, _, Marionette, template, RacesView, RunnersView, RacePlayerView, state, CreateRaceLayout) ->
 
 
 	RacesLayout = Marionette.LayoutView.extend
@@ -12,31 +12,29 @@ define ["radio", "underscore", "marionette", "text!templates/races/layout", "vie
 			createRaceRegion: 	'[data-region="create-race"]'
 
 		initialize: (options) ->
-			_.bindAll @, "onDataFetch", "onSelectRace"
-			@mergeOptions options, ["runners"]
-
-		destroy: ->
-			(Radio.channel "races").off "select"
+			_.bindAll @, "selectRace"
+			@mergeOptions options, ["races", "runners", "raceId"]
+			(Radio.channel "races").on "select", @selectRace
 
 		onBeforeShow: ->
-			racesStore.fetch().done @onDataFetch
-
 			@runnersRegion.show new RunnersView
 				runners: @runners
 
 			@createRaceRegion.show new CreateRaceLayout
 
-		onDataFetch: (races) ->
-			@races = races
 			@racesRegion.show new RacesView
-				collection: races
+				collection: @races
 
-			(Radio.channel "races").on "select", @onSelectRace
+			race = @getRace()
+			if race
+				@selectRace race
 
-			defaultRace = races.at 0
-			@onSelectRace defaultRace.get "id"
+		getRace: ->
+			if not @raceId
+				return @races.at 0
+			else
+				return @races.findWhere {id: @raceId}
 
-		onSelectRace: (raceId) ->
+		selectRace: (race) ->
 			@racePlayerRegion.show new RacePlayerView
-				model: @races.findWhere
-					id: raceId
+				model: race

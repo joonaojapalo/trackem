@@ -1,7 +1,13 @@
 define ["radio", "app/state", "underscore", "marionette", "text!templates/races/player"], (Radio, state, _, Marionette, template) ->
 
 	RacePlayerView = Marionette.ItemView.extend
-	
+
+		className: ->
+			if (@model.get "status") == "started"
+				return "race-player race-player-started"
+			else
+				return "race-player race-player-stopped"
+
 		template: template
 
 		templateHelpers: ->
@@ -15,20 +21,31 @@ define ["radio", "app/state", "underscore", "marionette", "text!templates/races/
 			"click @ui.start": "start"
 			"click @ui.stop": "stop"
 
-		initialize: ->
-			#_.bindAll @, "toggle"
-			@model.on "change", @render
+		modelEvents:
+			"change:status": "onStatusChange"
 
 		onRender: ->
-			status = (@model.get "status")
-			console.log "render", status
-#			if status == "started"
-#				@ui.stop.addClass "hidden"
-			#when "stopped" then @ui.start.addClass "hidden"
+			@onStatusChange()
 
 		start: ->
 			promise = @model.save {status: "started"}, {wait: true}
 
 		stop: ->
-			promise = @model.save
-				status: "stopped"
+			promise = @model.save {status: "stopped"}, {wait: true}
+
+		onStatusChange: ->
+			status = (@model.get "status")
+
+			@$el.removeClass()
+			@$el.addClass @className()	
+
+			if status == "started"
+				@ui.start.addClass "hidden"
+			else
+				@ui.start.removeClass "hidden"
+
+			if status == "stopped"
+				@ui.stop.addClass "hidden"
+			else
+				@ui.stop.removeClass "hidden"
+
