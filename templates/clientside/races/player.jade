@@ -15,12 +15,15 @@ hr
 	.col-lg-4
 		p.text-muted {{'{{_ "Status"}}'}}:
 	.col-lg-8
-		strong {{'{{status}}'}}
+		.started
+			strong {{'{{_ "Playing"}}'}}
+		.stopped
+			strong {{'{{_ "Stopped"}}'}}
 .row
-	.col-lg-12
+	.col-lg-12	
 		p.text-muted {{'{{_ "Tracking link"}}'}}:
 	.col-lg-12
 		a(href="{{'{{followUrl}}'}}", target="_blank") {{'{{followUrl}}'}}
 br
-button.btn.btn-warning.btn-block.btn-lg(data-action="start") {{'{{_ "Start"}}'}}
-button.btn.btn-danger.btn-block.btn-lg(data-action="stop") {{'{{_ "Stop"}}'}}
+button.btn.btn-warning.btn-block.btn-lg.stopped(data-action="start") {{'{{_ "Start"}}'}}
+button.btn.btn-danger.btn-block.btn-lg.started(data-action="stop") {{'{{_ "Stop"}}'}}
