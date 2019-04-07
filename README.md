@@ -1,5 +1,5 @@
 
-# Delpoyment
+# Deployment
 
 ## Create app
 ```
@@ -19,7 +19,7 @@ heroku logs --tail
 
 
 ## Database
-Local database: `postgres://trackemg:trackem@localhost:5432`
+Local database: `postgres://trackem:trackem@localhost:5432`
 
 ### Initialize migrate
 ```
@@ -56,7 +56,7 @@ Client-side `Backbone.Radio` channels
  	- new object editor
  - andoid app
  	- smokes
- 	- location collerctor service
+ 	- location collector service
  - SSL
  	- force ssl
  	- create & get certs
@@ -69,6 +69,6 @@ Client-side `Backbone.Radio` channels
 2016-03-01 15:54: smokes in production with db & api
 2016-03-02 15:30: login & jade layout
 2016-03-02 17:42: coffee script smokes.
-2016-03-03 11:13: rest api uunittesting smokes
+2016-03-03 11:13: rest api unittesting smokes
 2016-03-15 11:14: android app smokes.
 2016-03-31 12:55: 1st android service bound.
